@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.controller;
+package com.palma.com.gestione_prenotazione.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.palma.ecommerceArte.auth.payload.JWTAuthResponse;
-import com.palma.ecommerceArte.auth.payload.LoginDto;
-import com.palma.ecommerceArte.auth.payload.RegisterDto;
-import com.palma.ecommerceArte.auth.service.AuthService;
+import com.palma.com.gestione_prenotazione.auth.payload.JWTAuthResponse;
+import com.palma.com.gestione_prenotazione.auth.payload.LoginDto;
+import com.palma.com.gestione_prenotazione.auth.payload.RegisterDto;
+import com.palma.com.gestione_prenotazione.auth.service.AuthService;
 
 @CrossOrigin(origins =  "http://localhost:3000", maxAge = 360000)
 @RestController

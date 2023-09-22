@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.entity;
+package com.palma.com.gestione_prenotazione.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

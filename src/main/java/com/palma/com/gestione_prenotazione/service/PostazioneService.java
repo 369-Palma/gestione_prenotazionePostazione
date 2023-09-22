@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.palma.com.gestione_prenotazione.model.Building;
 import com.palma.com.gestione_prenotazione.model.Postazione;
 import com.palma.com.gestione_prenotazione.model.TipoPostazione;
 import com.palma.com.gestione_prenotazione.repository.PostazioneRepository;
@@ -30,7 +29,7 @@ public class PostazioneService {
 
 	//METODI STANDARD PER API
 
-	public List<Postazione> getAllPostazione() {
+	public List<Postazione> getAllPostazioni() {
 		return (List<Postazione>) repo.findAll();
 	}
 
@@ -76,24 +75,24 @@ public class PostazioneService {
 
 //SPECIALI
 	public Page<Postazione> filtraPerTipo (TipoPostazione tipo, Pageable page){
-		if(!repo.existByTipo(tipo)){
+		if(!repo.existsByTipo(tipo)){
 			throw new EntityExistsException("The station type " + tipo + " does not exist in the database!");
 		} 
 		return (Page<Postazione>) repo.findByTipo(tipo, page);
 	}
 	
 	public Postazione filtraPerCodice(Long codice){
-		if(!repo.existByCodice(codice)) { 
+		if(!repo.existsByCodice(codice)) { 
 			throw new EntityExistsException("There are no station with code" + codice);
 		}
 		return repo.findByCodice(codice);
 	}
 	
 	
-	public Page<Postazione> filtraPerParteDiCodice(String codice, Pageable page){
-		if(!repo.existByCodice(codice)) { 
-			throw new EntityExistsException("There are no station with code" + codice);
-		}
-		return (Page<Postazione>) repo.findByCodice(codice, page);
-	}
+	//public Page<Postazione> filtraPerParteDiCodice(Long codice, Pageable page){
+	//	if(!repo.existsByCodice(codice)) { 
+	//		throw new EntityExistsException("There are no station with code" + codice);
+	//	}
+	//	return (Page<Postazione>) repo.findByCodice(codice, page);
+	//}
 }

@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.payload;
+package com.palma.com.gestione_prenotazione.auth.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

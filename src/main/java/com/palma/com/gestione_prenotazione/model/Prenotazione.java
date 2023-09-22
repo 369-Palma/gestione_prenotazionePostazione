@@ -14,7 +14,7 @@ private Long id;
 
 @JoinColumn
 @ManyToOne
-private Dipendente user;
+private Dipendente dipendente;
 
 @JoinColumn
 @ManyToOne

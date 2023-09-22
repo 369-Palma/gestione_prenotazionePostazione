@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.controller;
+package com.palma.com.gestione_prenotazione.auth.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

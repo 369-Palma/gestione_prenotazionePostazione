@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.security;
+package com.palma.com.gestione_prenotazione.auth.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.palma.ecommerceArte.auth.exception.MyAPIException;
+import com.palma.com.gestione_prenotazione.auth.exception.MyAPIException;
 
 import java.security.Key;
 import java.util.Date;

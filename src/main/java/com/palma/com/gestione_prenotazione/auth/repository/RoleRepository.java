@@ -1,9 +1,9 @@
-package com.palma.ecommerceArte.auth.repository;
+package com.palma.com.gestione_prenotazione.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.palma.ecommerceArte.auth.entity.ERole;
-import com.palma.ecommerceArte.auth.entity.Role;
+import com.palma.com.gestione_prenotazione.auth.entity.ERole;
+import com.palma.com.gestione_prenotazione.auth.entity.Role;
 
 import java.util.Optional;
 

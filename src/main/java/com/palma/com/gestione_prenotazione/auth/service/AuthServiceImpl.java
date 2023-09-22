@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.service;
+package com.palma.com.gestione_prenotazione.auth.service;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,15 +11,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.palma.ecommerceArte.auth.entity.ERole;
-import com.palma.ecommerceArte.auth.entity.Role;
-import com.palma.ecommerceArte.auth.entity.User;
-import com.palma.ecommerceArte.auth.exception.MyAPIException;
-import com.palma.ecommerceArte.auth.payload.LoginDto;
-import com.palma.ecommerceArte.auth.payload.RegisterDto;
-import com.palma.ecommerceArte.auth.repository.RoleRepository;
-import com.palma.ecommerceArte.auth.repository.UserRepository;
-import com.palma.ecommerceArte.auth.security.JwtTokenProvider;
+import com.palma.com.gestione_prenotazione.auth.entity.ERole;
+import com.palma.com.gestione_prenotazione.auth.entity.Role;
+import com.palma.com.gestione_prenotazione.auth.entity.User;
+import com.palma.com.gestione_prenotazione.auth.exception.MyAPIException;
+import com.palma.com.gestione_prenotazione.auth.payload.LoginDto;
+import com.palma.com.gestione_prenotazione.auth.payload.RegisterDto;
+import com.palma.com.gestione_prenotazione.auth.repository.RoleRepository;
+import com.palma.com.gestione_prenotazione.auth.repository.UserRepository;
+import com.palma.com.gestione_prenotazione.auth.security.JwtTokenProvider;
 
 @Service
 public class AuthServiceImpl implements AuthService {

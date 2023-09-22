@@ -1,7 +1,7 @@
-package com.palma.ecommerceArte.auth.service;
+package com.palma.com.gestione_prenotazione.auth.service;
 
-import com.palma.ecommerceArte.auth.payload.LoginDto;
-import com.palma.ecommerceArte.auth.payload.RegisterDto;
+import com.palma.com.gestione_prenotazione.auth.payload.LoginDto;
+import com.palma.com.gestione_prenotazione.auth.payload.RegisterDto;
 
 public interface AuthService {
     

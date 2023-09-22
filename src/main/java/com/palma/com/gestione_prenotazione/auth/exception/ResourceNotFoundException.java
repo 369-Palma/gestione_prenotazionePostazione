@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.exception;
+package com.palma.com.gestione_prenotazione.auth.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

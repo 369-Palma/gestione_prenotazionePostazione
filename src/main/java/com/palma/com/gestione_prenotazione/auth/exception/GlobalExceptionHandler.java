@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.exception;
+package com.palma.com.gestione_prenotazione.auth.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.palma.ecommerceArte.auth.payload.ErrorDetails;
+import com.palma.com.gestione_prenotazione.auth.payload.ErrorDetails;
 
 import java.util.Date;
 import java.util.HashMap;

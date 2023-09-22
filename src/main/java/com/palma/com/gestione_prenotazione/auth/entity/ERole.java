@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.entity;
+package com.palma.com.gestione_prenotazione.auth.entity;
 
 public enum ERole {
 	ROLE_USER,

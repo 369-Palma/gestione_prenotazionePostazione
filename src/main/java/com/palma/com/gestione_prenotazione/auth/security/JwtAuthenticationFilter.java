@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.security;
+package com.palma.com.gestione_prenotazione.auth.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

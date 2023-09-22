@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.runner;
+package com.palma.com.gestione_prenotazione.auth.runner;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,11 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.palma.ecommerceArte.auth.entity.ERole;
-import com.palma.ecommerceArte.auth.entity.Role;
-import com.palma.ecommerceArte.auth.repository.RoleRepository;
-import com.palma.ecommerceArte.auth.repository.UserRepository;
-import com.palma.ecommerceArte.auth.service.AuthService;
+import com.palma.com.gestione_prenotazione.auth.entity.ERole;
+import com.palma.com.gestione_prenotazione.auth.entity.Role;
+import com.palma.com.gestione_prenotazione.auth.repository.RoleRepository;
+import com.palma.com.gestione_prenotazione.auth.repository.UserRepository;
+import com.palma.com.gestione_prenotazione.auth.service.AuthService;
 
 
 @Component @ComponentScan

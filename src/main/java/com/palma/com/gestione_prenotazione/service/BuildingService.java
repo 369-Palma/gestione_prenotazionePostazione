@@ -18,7 +18,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class BuildingService {
 
 	@Autowired BuildingRepository repo;
-	@Autowired @Qualifier("BuildingRandom")private ObjectProvider<Building> randomBuildingProvider;
+	@Autowired @Qualifier("buildingRandom")private ObjectProvider<Building> randomBuildingProvider;
 
 	
 	//CREA EDIFICI RANDOM 

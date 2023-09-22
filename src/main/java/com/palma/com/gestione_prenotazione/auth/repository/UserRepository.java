@@ -1,8 +1,8 @@
-package com.palma.ecommerceArte.auth.repository;
+package com.palma.com.gestione_prenotazione.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.palma.ecommerceArte.auth.entity.User;
+import com.palma.com.gestione_prenotazione.auth.entity.User;
 
 import java.util.Optional;
 

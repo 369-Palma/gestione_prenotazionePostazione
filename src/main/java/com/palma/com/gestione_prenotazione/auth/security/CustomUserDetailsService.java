@@ -1,4 +1,4 @@
-package com.palma.ecommerceArte.auth.security;
+package com.palma.com.gestione_prenotazione.auth.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.palma.ecommerceArte.auth.entity.User;
-import com.palma.ecommerceArte.auth.repository.UserRepository;
+import com.palma.com.gestione_prenotazione.auth.entity.User;
+import com.palma.com.gestione_prenotazione.auth.repository.UserRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;
