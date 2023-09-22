@@ -44,7 +44,7 @@ public class PrenotazioneConfiguration {
 	     //   prenotazioni.add(prenotazioneService.getPrenotazioneRandom());
 		
 		return Prenotazione.builder()
-				.user(userService.getUserRandom())
+				.dipendente(userService.getUserRandom())
 				.postazione(postazioneService.getPostazioneRandom())
 				.dataPrenotata(dataPrenotataConv)
 				.dataPrenotazione(dataOggi)
