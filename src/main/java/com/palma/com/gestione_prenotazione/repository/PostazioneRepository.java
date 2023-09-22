@@ -22,6 +22,7 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	
 	public boolean existsByCodice(Long codice);
 	
+
 	public boolean existsByTipo(TipoPostazione tipo);
 	
 	//FILTRO PER TIPO DI POSTAZIONE
@@ -33,9 +34,6 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	
 	@Query("SELECT p FROM Postazione p WHERE p.codice = :codice")
 	public Prenotazione findByCodicePrenotazione(Long codice);
-	
-	//@Query("SELECT p FROM Postazione p WHERE CAST(p.codice AS string) LIKE %:codice%")
-	//public Page<Postazione> findByCodice(@Param("codice") String codice, Pageable page);
 
 	@Query("SELECT post FROM Postazione post where"
 			+ " post.building.citta = :citta AND post.tipo = :tipo"
@@ -43,6 +41,20 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	public Page<Postazione> findLibereByCitta(Citta citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
 	
 	public Page<Postazione> findByBuildingCittaAndTipo(Citta citta, TipoPostazione tipoPostazione, Pageable pageable);
+
+	
+	@Query("SELECT post FROM Postazione post where"
+			+ " post.building.citta.name = :citta AND post.tipo = :tipo")
+			
+	public Page<Postazione> findLiberePerCittaETipo(String citta, TipoPostazione tipo, Pageable pageable);
+	
+	
+	
+	@Query("SELECT post FROM Postazione post where"
+			+ " post.building.citta.name = :citta AND post.tipo = :tipo"
+			+ " AND post.id NOT IN (SELECT pre.postazione.id FROM Prenotazione pre where pre.dataPrenotata <> :dataRichiesta)")
+	public Page<Postazione> findLibere(String citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
+
 
 	
 }

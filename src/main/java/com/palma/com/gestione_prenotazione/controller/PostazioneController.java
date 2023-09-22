@@ -1,5 +1,6 @@
 package com.palma.com.gestione_prenotazione.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +52,16 @@ public class PostazioneController {
 	public ResponseEntity<?> cercaPerCodice(@PathVariable Long codice){
 		return new ResponseEntity<Postazione>(service.filtraPerCodice(codice), HttpStatus.FOUND);
 	}
+	
+	@GetMapping("/citta/{citta}/tipo/{tipo}/data/{dataRichiesta}")
+	public ResponseEntity<?> ricercaAvanzata(@PathVariable String citta, TipoPostazione tipo, LocalDate dataRichiesta, Pageable page){
+		return new ResponseEntity<Page<Postazione>>(service.trovaDisponibili(citta, tipo, dataRichiesta, page), HttpStatus.FOUND);
+	}
+
+	
+	@GetMapping("/citta/{citta}/tipo/{tipo}")
+	public ResponseEntity<?> ricercaSenzaData(@PathVariable String citta, TipoPostazione tipo, Pageable page){
+		return new ResponseEntity<Page<Postazione>>(service.trovaPerCittaeTipo(citta, tipo, page), HttpStatus.FOUND);
+	}
+	
 }

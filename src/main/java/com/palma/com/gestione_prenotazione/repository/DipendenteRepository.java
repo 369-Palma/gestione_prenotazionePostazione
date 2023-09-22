@@ -14,4 +14,5 @@ public interface DipendenteRepository extends JpaRepository<Dipendente, Long> {
 	Dipendente findByRandomUser();
 	
 	//public boolean existByEmail(String email);
+	
 }

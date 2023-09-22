@@ -1,5 +1,6 @@
 package com.palma.com.gestione_prenotazione.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.palma.com.gestione_prenotazione.model.Citta;
 import com.palma.com.gestione_prenotazione.model.Postazione;
 import com.palma.com.gestione_prenotazione.model.TipoPostazione;
 import com.palma.com.gestione_prenotazione.repository.PostazioneRepository;
@@ -88,6 +90,16 @@ public class PostazioneService {
 		return repo.findByCodice(codice);
 	}
 	
+	public Page<Postazione> trovaDisponibili(String citta, TipoPostazione tipo, LocalDate date, Pageable page){
+		return (Page<Postazione>) repo.findLibere(citta, tipo, date, page);
+	}
+	
+	public Page<Postazione> trovaPerCittaeTipo(String citta, TipoPostazione tipo, Pageable page){
+		if(!repo.existsByTipo(tipo)) {
+			throw new EntityExistsException("Non ci sono postazioni con tipo" + tipo + " in " + citta) ;
+		}
+		return (Page<Postazione>) repo.findLiberePerCittaETipo(citta, tipo, page);
+	}
 	
 	//public Page<Postazione> filtraPerParteDiCodice(Long codice, Pageable page){
 	//	if(!repo.existsByCodice(codice)) { 
