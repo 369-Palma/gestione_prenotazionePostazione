@@ -40,14 +40,17 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 			+ " AND post.id NOT IN (SELECT pre.postazione.id FROM Prenotazione pre where pre.dataPrenotata <> :dataRichiesta)")
 	public Page<Postazione> findLibereByCitta(Citta citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
 	
-	public Page<Postazione> findByBuildingCittaAndTipo(Citta citta, TipoPostazione tipoPostazione, Pageable pageable);
+	//public Page<Postazione> findByBuildingCittaAndTipo(Citta citta, TipoPostazione tipoPostazione, Pageable pageable);
 
 	
-	@Query("SELECT post FROM Postazione post where"
-			+ " post.building.citta.name = :citta AND post.tipo = :tipo")
+	//@Query("SELECT post FROM Postazione post where"
+			//+ " post.building.citta.name = :citta AND post.tipo = :tipo")
 			
-	public Page<Postazione> findLiberePerCittaETipo(String citta, TipoPostazione tipo, Pageable pageable);
+	//public Page<Postazione> findLiberePerCittaETipo(String citta, TipoPostazione tipo, Pageable pageable);
 	
+	
+	@Query("SELECT post FROM Postazione post JOIN post.building.citta WHERE citta.name = :citta AND post.tipo = :tipo")
+	public Page<Postazione> findLiberePerCittaETipo(@Param("citta") String citta, @Param("tipo") TipoPostazione tipo, Pageable pageable);
 	
 	
 	@Query("SELECT post FROM Postazione post where"
