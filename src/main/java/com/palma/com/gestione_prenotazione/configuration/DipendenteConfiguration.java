@@ -17,12 +17,14 @@ public class DipendenteConfiguration {
 	@Scope("prototype")
 	public Dipendente randomUser() {
 		Faker fake = new Faker(new Locale("it-IT"));
+		String nome = fake.name().firstName();
+		String lastname = fake.name().lastName();
 		
 		return Dipendente.builder()
-		.name(fake.name().firstName())
-		.lastname(fake.name().lastName())
-		.username(fake.name().username())
-		.email(fake.internet().emailAddress())
+		.name(nome)
+		.lastname(lastname)
+		.username(nome +"."+ lastname)
+		.email(nome +"."+ lastname + fake.number().numberBetween(1, 100) + fake.internet().domainName())
 		.active(true)
 		.password(fake.internet().password(8, 20, true))
 		.build();

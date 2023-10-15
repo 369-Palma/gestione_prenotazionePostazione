@@ -10,15 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.palma.com.gestione_prenotazione.model.Dipendente;
-import com.palma.com.gestione_prenotazione.repository.UserRepository;
+import com.palma.com.gestione_prenotazione.repository.DipendenteRepository;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UserService {
+public class DipendenteService {
 	
-	@Autowired UserRepository repo;
+	@Autowired DipendenteRepository repo;
 	@Autowired @Qualifier("RandomUser")private ObjectProvider<Dipendente> randomUserProvider;
 	
 	//CREA USERS RANDOM 

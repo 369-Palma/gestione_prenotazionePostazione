@@ -8,7 +8,7 @@ import com.palma.com.gestione_prenotazione.model.Dipendente;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<Dipendente, Long> {
+public interface DipendenteRepository extends JpaRepository<Dipendente, Long> {
 
 	@Query(value = "SELECT d FROM Dipendente d ORDER BY RANDOM() LIMIT 1")
 	Dipendente findByRandomUser();

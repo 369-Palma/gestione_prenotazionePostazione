@@ -25,7 +25,7 @@ public class BuildingConfiguration {
 		return Building.builder()
 				.name(fake.company().name())
 				.address(fake.address().streetAddress())
-				.citta(cityService.getCittaRandom())
+				.citta(cityService.createCittaRandom())
 				.build();
 	}
 	

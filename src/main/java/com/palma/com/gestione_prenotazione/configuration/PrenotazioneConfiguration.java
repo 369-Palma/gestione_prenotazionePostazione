@@ -14,15 +14,16 @@ import java.util.Random;
 
 import com.github.javafaker.Faker;
 import com.palma.com.gestione_prenotazione.model.Prenotazione;
+import com.palma.com.gestione_prenotazione.service.DipendenteService;
 import com.palma.com.gestione_prenotazione.service.PostazioneService;
-import com.palma.com.gestione_prenotazione.service.UserService;
+
 
 
 
 @Configuration
 public class PrenotazioneConfiguration {
 
-	@Autowired UserService userService;
+	@Autowired DipendenteService dipendenteService;
 	@Autowired PostazioneService postazioneService;
 	
 	@Bean(name = "PrenotazioneRandom")
@@ -44,7 +45,7 @@ public class PrenotazioneConfiguration {
 	     //   prenotazioni.add(prenotazioneService.getPrenotazioneRandom());
 		
 		return Prenotazione.builder()
-				.user(userService.getUserRandom())
+				.dipendente(dipendenteService.getUserRandom())
 				.postazione(postazioneService.getPostazioneRandom())
 				.dataPrenotata(dataPrenotataConv)
 				.dataPrenotazione(dataOggi)

@@ -1,5 +1,6 @@
 package com.palma.com.gestione_prenotazione.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.palma.com.gestione_prenotazione.model.Building;
+import com.palma.com.gestione_prenotazione.model.Citta;
 import com.palma.com.gestione_prenotazione.model.Postazione;
 import com.palma.com.gestione_prenotazione.model.TipoPostazione;
 import com.palma.com.gestione_prenotazione.repository.PostazioneRepository;
@@ -30,7 +31,7 @@ public class PostazioneService {
 
 	//METODI STANDARD PER API
 
-	public List<Postazione> getAllPostazione() {
+	public List<Postazione> getAllPostazioni() {
 		return (List<Postazione>) repo.findAll();
 	}
 
@@ -96,4 +97,18 @@ public class PostazioneService {
 		}
 		return (Page<Postazione>) repo.findByCodice(codice, page);
 	}
+	
+	public Page<Postazione> trovaPerCittaeTipo(String citta, TipoPostazione tipo, Pageable page){
+		if(!repo.existsByTipo(tipo)) {
+			throw new EntityExistsException("Non ci sono postazioni con tipo" + tipo + " in " + citta) ;
+		}
+		return (Page<Postazione>) repo.findLiberePerCittaETipo(citta, tipo, page);
+	}
+	
+	//public Page<Postazione> filtraPerParteDiCodice(Long codice, Pageable page){
+	//	if(!repo.existsByCodice(codice)) { 
+	//		throw new EntityExistsException("There are no station with code" + codice);
+	//	}
+	//	return (Page<Postazione>) repo.findByCodice(codice, page);
+	//}
 }

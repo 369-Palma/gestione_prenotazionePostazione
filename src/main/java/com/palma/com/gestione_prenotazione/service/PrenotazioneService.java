@@ -17,7 +17,9 @@ import com.palma.com.gestione_prenotazione.common.PrenotazioneException;
 import com.palma.com.gestione_prenotazione.model.Dipendente;
 import com.palma.com.gestione_prenotazione.model.Postazione;
 import com.palma.com.gestione_prenotazione.model.Prenotazione;
+import com.palma.com.gestione_prenotazione.repository.PostazioneRepository;
 import com.palma.com.gestione_prenotazione.repository.PrenotazioneRepository;
+
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +28,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class PrenotazioneService {
 
 	@Autowired PrenotazioneRepository repo;
+	@Autowired PostazioneRepository postRepo;
 	//@Autowired @Qualifier(PrenotazioneRandom) private ObjectProvider<Prenotazione> randomPrenotazioneProvider;
 	
 	@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
@@ -58,7 +61,7 @@ public class PrenotazioneService {
 
 		public Prenotazione getPrenotazione(Long id) {
 			if(!repo.existsById(id)) {
-				throw new EntityNotFoundException("The prenotation with id" + id + "does not exist in the database!");
+				throw new EntityNotFoundException("The prenotation with id " + id + " does not exist in the database!");
 			}
 			return repo.findById(id).get();
 		}
@@ -103,10 +106,10 @@ public class PrenotazioneService {
 
 			Pageable pageable = PageRequest.of(0, 1);
 
-			Page<Prenotazione> findByUserDataPrenotata = repo.findByUserAndDataPrenotata(d,
+			Page<Prenotazione> findByDipendenteDataPrenotata = repo.findByDipendenteAndDataPrenotata(d,
 					dataPrenotazione, pageable);
 
-			return findByUserDataPrenotata.isEmpty();
+			return findByDipendenteDataPrenotata.isEmpty();
 
 		}
 		
@@ -114,23 +117,16 @@ public class PrenotazioneService {
 			return repo.findById(id);
 		}
 		
-
-		public Page<Prenotazione> findByUser(Dipendente d, Pageable pageable) {
-			return repo.findByUser(d, pageable);
+		public Prenotazione getByCodice(Long codice) {
+			if(!postRepo.existsByCodice(codice)) {
+				throw new EntityExistsException("Non ci sono prenotazioni con codice di postazione " + codice);
+			} 
+			return postRepo.findByCodicePrenotazione(codice);
+		}	
 		}
+
+		//public Page<Prenotazione> findByDipendente(Dipendente d, Pageable pageable) {
+		//	return repo.findByDipendente(d, pageable);
+		//}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-}
+

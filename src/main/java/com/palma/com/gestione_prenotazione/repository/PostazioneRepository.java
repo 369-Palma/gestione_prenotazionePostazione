@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.palma.com.gestione_prenotazione.model.Citta;
 import com.palma.com.gestione_prenotazione.model.Postazione;
+import com.palma.com.gestione_prenotazione.model.Prenotazione;
 import com.palma.com.gestione_prenotazione.model.TipoPostazione;
 
 @Repository
@@ -20,23 +21,43 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	Postazione findByPostazioneRandom();
 	
 	public boolean existsByCodice(Long codice);
-	//public boolean existsByCodice(String codice);
+	
+
 	public boolean existsByTipo(TipoPostazione tipo);
 	
 	//FILTRO PER TIPO DI POSTAZIONE
-	@Query("SELECT p FROM Postazione p WHERE p.tipo = :tipo ")
+	@Query("SELECT post FROM Postazione post WHERE post.tipo = :tipo ")
 	public Page<Postazione> findByTipo(TipoPostazione tipo, Pageable page);
 	
-	@Query("SELECT p FROM Postazione p WHERE p.codice LIKE %:codice% ")
+	@Query("SELECT p FROM Postazione p WHERE p.codice = :codice")
 	public Postazione findByCodice(Long codice);
 	
-	@Query("SELECT p FROM Postazione p WHERE CAST(p.codice AS string) LIKE %:codice%")
-	public Page<Postazione> findByCodice(@Param("codice") Long codice, Pageable page);
+	@Query("SELECT p FROM Postazione p WHERE p.codice = :codice")
+	public Prenotazione findByCodicePrenotazione(Long codice);
 
-	@Query(value = "SELECT * FROM Postazione post " +
-            "WHERE post.edificio_citta_id = :cittaId " +
-            "AND post.tipo = :tipo " +
-            "AND post.id NOT IN (SELECT pre.postazione_id FROM Prenotazione pre WHERE pre.data_prenotata = :dataRichiesta)",
-            nativeQuery = true)
-    Page<Postazione> findLibereByCitta(@Param("cittaId") Long cittaId, @Param("tipo") TipoPostazione tipo, @Param("dataRichiesta") LocalDate dataRichiesta, Pageable pageable);
+	@Query("SELECT post FROM Postazione post where"
+			+ " post.building.citta = :citta AND post.tipo = :tipo"
+			+ " AND post.id NOT IN (SELECT pre.postazione.id FROM Prenotazione pre where pre.dataPrenotata <> :dataRichiesta)")
+	public Page<Postazione> findLibereByCitta(Citta citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
+	
+	//public Page<Postazione> findByBuildingCittaAndTipo(Citta citta, TipoPostazione tipoPostazione, Pageable pageable);
+
+	
+	//@Query("SELECT post FROM Postazione post where"
+			//+ " post.building.citta.name = :citta AND post.tipo = :tipo")
+			
+	//public Page<Postazione> findLiberePerCittaETipo(String citta, TipoPostazione tipo, Pageable pageable);
+	
+	
+	@Query("SELECT post FROM Postazione post JOIN post.building.citta WHERE citta.name = :citta AND post.tipo = :tipo")
+	public Page<Postazione> findLiberePerCittaETipo(@Param("citta") String citta, @Param("tipo") TipoPostazione tipo, Pageable pageable);
+	
+	
+	@Query("SELECT post FROM Postazione post where"
+			+ " post.building.citta.name = :citta AND post.tipo = :tipo"
+			+ " AND post.id NOT IN (SELECT pre.postazione.id FROM Prenotazione pre where pre.dataPrenotata <> :dataRichiesta)")
+	public Page<Postazione> findLibere(String citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
+
+
+	
 }
