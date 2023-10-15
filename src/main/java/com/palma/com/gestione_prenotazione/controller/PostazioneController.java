@@ -53,10 +53,10 @@ public class PostazioneController {
 		return new ResponseEntity<Postazione>(service.filtraPerCodice(codice), HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/citta/{citta}/tipo/{tipo}/data/{dataRichiesta}")
-	public ResponseEntity<?> ricercaAvanzata(@PathVariable String citta, TipoPostazione tipo, LocalDate dataRichiesta, Pageable page){
-		return new ResponseEntity<Page<Postazione>>(service.trovaDisponibili(citta, tipo, dataRichiesta, page), HttpStatus.OK);
-	}
+	//@GetMapping("/citta/{citta}/tipo/{tipo}/data/{dataRichiesta}")
+	//public ResponseEntity<?> ricercaAvanzata(@PathVariable String citta, TipoPostazione tipo, LocalDate dataRichiesta, Pageable page){
+	//	return new ResponseEntity<Page<Postazione>>(service.trovaDisponibili(citta, tipo, dataRichiesta, page), HttpStatus.OK);
+	//}
 
 	
 	@GetMapping("/citta/{citta}/tipo/{tipo}")
