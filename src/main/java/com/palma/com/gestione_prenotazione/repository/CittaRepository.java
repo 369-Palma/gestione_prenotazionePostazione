@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.palma.com.gestione_prenotazione.model.Citta;
 
-@Repository("cittaRepository")
+@Repository
 public interface CittaRepository extends JpaRepository<Citta, Long> {
 
-	@Query(value = "SELECT c FROM City c ORDER BY FUNCTION('RAND') LIMIT 1")
+	@Query(value = "SELECT c FROM Citta c ORDER BY RAND() LIMIT 1")
 	Citta findByCittaRandom();
 	
 	

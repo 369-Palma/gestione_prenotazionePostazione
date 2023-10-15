@@ -19,9 +19,9 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	@Query( value = "SELECT p FROM Postazione p ORDER BY RANDOM() LIMIT 1")
 	Postazione findByPostazioneRandom();
 	
-	public boolean existByCodice(Long codice);
-	public boolean existByCodice(String codice);
-	public boolean existByTipo(TipoPostazione tipo);
+	public boolean existsByCodice(Long codice);
+	//public boolean existsByCodice(String codice);
+	public boolean existsByTipo(TipoPostazione tipo);
 	
 	//FILTRO PER TIPO DI POSTAZIONE
 	@Query("SELECT p FROM Postazione p WHERE p.tipo = :tipo ")
@@ -31,13 +31,12 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	public Postazione findByCodice(Long codice);
 	
 	@Query("SELECT p FROM Postazione p WHERE CAST(p.codice AS string) LIKE %:codice%")
-	public Page<Postazione> findByCodice(@Param("codice") String codice, Pageable page);
+	public Page<Postazione> findByCodice(@Param("codice") Long codice, Pageable page);
 
-	@Query("SELECT post FROM Postazione post where"
-			+ " post.edificio.citta = :citta AND post.tipo = :tipo"
-			+ " AND post.id NOT IN (SELECT pre.postazione.id FROM Prenotazione pre where pre.dataPrenotata <> :dataRichiesta)")
-	public Page<Postazione> findLibereByCitta(Citta citta, TipoPostazione tipo,  LocalDate dataRichiesta, Pageable pageable);
-	
-	public Page<Postazione> findByEdificioCittaAndTipo(Citta citta, TipoPostazione tipoPostazione, Pageable pageable);
-
+	@Query(value = "SELECT * FROM Postazione post " +
+            "WHERE post.edificio_citta_id = :cittaId " +
+            "AND post.tipo = :tipo " +
+            "AND post.id NOT IN (SELECT pre.postazione_id FROM Prenotazione pre WHERE pre.data_prenotata = :dataRichiesta)",
+            nativeQuery = true)
+    Page<Postazione> findLibereByCitta(@Param("cittaId") Long cittaId, @Param("tipo") TipoPostazione tipo, @Param("dataRichiesta") LocalDate dataRichiesta, Pageable pageable);
 }
