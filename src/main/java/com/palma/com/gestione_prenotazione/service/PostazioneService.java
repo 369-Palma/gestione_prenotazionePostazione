@@ -91,11 +91,11 @@ public class PostazioneService {
 	}
 	
 	
-	public Page<Postazione> filtraPerParteDiCodice(Long codice, Pageable page){
+	public Postazione filtraPerParteDiCodice(Long codice){
 		if(!repo.existsByCodice(codice)) { 
 			throw new EntityExistsException("There are no station with code" + codice);
 		}
-		return (Page<Postazione>) repo.findByCodice(codice, page);
+		return repo.findByCodice(codice);
 	}
 	
 	public Page<Postazione> trovaPerCittaeTipo(String citta, TipoPostazione tipo, Pageable page){
