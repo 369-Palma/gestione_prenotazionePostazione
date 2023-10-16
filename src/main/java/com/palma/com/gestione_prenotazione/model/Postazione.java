@@ -14,7 +14,7 @@ private Long codice;
 
 private String descrizione;
 
-@Column(nullable = false)
+//@Column(nullable = false)
 private Integer numeroMaxOccupanti;
 
 @Column(nullable = false)

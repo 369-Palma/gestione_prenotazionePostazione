@@ -23,10 +23,7 @@ public class DipendenteConfiguration {
 		return Dipendente.builder()
 		.name(nome)
 		.lastname(lastname)
-		.username(nome +"."+ lastname)
 		.email(nome +"."+ lastname + fake.number().numberBetween(1, 100) + fake.internet().domainName())
-		.active(true)
-		.password(fake.internet().password(8, 20, true))
 		.build();
 	}
 }
