@@ -13,11 +13,11 @@ public class Prenotazione {
 private Long id;
 
 @JoinColumn
-@ManyToOne
+@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 private Dipendente dipendente;
 
 @JoinColumn
-@ManyToOne
+@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 private Postazione postazione;
 
 @Column(nullable = false)

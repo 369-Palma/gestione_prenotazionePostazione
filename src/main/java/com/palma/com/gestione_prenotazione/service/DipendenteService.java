@@ -72,7 +72,12 @@ public Dipendente createRandomUser() {
 		return d;
 	}
 
-
+	public Long getUserIdByEmail(String email) {
+		if(!repo.existsByEmail(email)) {
+			throw new EntityNotFoundException("The User with email" + email + "does not exist in the database!");
+		}
+		return repo.trovaperEmail(email);
+	}
 	
 	
 }

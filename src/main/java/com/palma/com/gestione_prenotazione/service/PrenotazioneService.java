@@ -31,8 +31,8 @@ public class PrenotazioneService {
 	@Autowired PostazioneRepository postRepo;
 	//@Autowired @Qualifier(PrenotazioneRandom) private ObjectProvider<Prenotazione> randomPrenotazioneProvider;
 	
-	@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
-	private Integer giorniAnticipoPrenotazione;
+	//@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
+	//private Integer giorniAnticipoPrenotazione;
 	
 	public Prenotazione prenota(Dipendente d, Postazione postazione, LocalDate dataPrenotazione) {
 		if (checkDataPrenotazione(dataPrenotazione) == false) {
@@ -49,6 +49,13 @@ public class PrenotazioneService {
 		return repo.save(prenotazione);
 
 	}
+	@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
+	private Integer giorniAnticipoPrenotazione;
+	public boolean checkDataPrenotazione(LocalDate dataPrenotata) {
+        LocalDate oggi = LocalDate.now();
+        LocalDate dataMinima = oggi.plusDays(giorniAnticipoPrenotazione);
+        return dataPrenotata.isAfter(dataMinima);
+    }
 	//METODI STANDARD PER API
 
 		public List<Prenotazione> getAllPrenotazione() {
@@ -71,7 +78,7 @@ public class PrenotazioneService {
 		//}
 
 		public Prenotazione createPrenotazione(Prenotazione p) {
-			if(p.getId()!= null && repo.existsById(p.getId())) {
+			if(repo.existsById(p.getId())) {
 				throw new EntityExistsException("The prenotation is already in the database ");
 			} else {
 				repo.save(p);
@@ -97,17 +104,13 @@ public class PrenotazioneService {
 
 	
 	//SPECIALI
-		private boolean checkDataPrenotazione(LocalDate dataPrenotazione) {
-			LocalDate now = LocalDate.now();
-			return dataPrenotazione.minus(giorniAnticipoPrenotazione, ChronoUnit.DAYS).isAfter(now);
-		}
+		
 
-		private boolean checkPrenotazioniUtentePerData(Dipendente d, LocalDate dataPrenotazione) {
-
+		public boolean checkPrenotazioniUtentePerData(Dipendente d, LocalDate dataPrenotata) {
 			Pageable pageable = PageRequest.of(0, 1);
 
 			Page<Prenotazione> findByDipendenteDataPrenotata = repo.findByDipendenteAndDataPrenotata(d,
-					dataPrenotazione, pageable);
+					dataPrenotata, pageable);
 
 			return findByDipendenteDataPrenotata.isEmpty();
 
