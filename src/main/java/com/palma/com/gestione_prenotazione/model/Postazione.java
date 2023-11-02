@@ -38,5 +38,14 @@ public Integer numPrenotati;
 //private List<Prenotazione> prenotazioni;
 
 
+public Integer getMaxOccupanti() {
+    if (maxOccupanti == null || maxOccupanti < 1) {
+        return 1; 
+    }
+    return maxOccupanti;
+}
+
+
+
 
 }

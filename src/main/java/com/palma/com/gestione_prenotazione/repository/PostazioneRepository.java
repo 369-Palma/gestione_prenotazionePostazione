@@ -24,10 +24,10 @@ public interface PostazioneRepository extends JpaRepository<Postazione, Long> {
 	public boolean existsByTipo(TipoPostazione tipo);
 	
 	
-	@Query("SELECT COUNT(p) = 0 FROM Prenotazione p " +
+	@Query("SELECT COUNT(p) FROM Prenotazione p " +
 		       "WHERE p.postazione = :postazione " +
-		       "AND :dataPrenotata = p.dataPrenotata")
-		boolean isPostazioneDisponibile(@Param("postazione") Postazione postazione, @Param("dataPrenotata") LocalDate dataPrenotata);
+		       "AND p.dataPrenotata = :dataPrenotata ")
+		public int contaPrenotazioniPerData(@Param("postazione") Postazione postazione, @Param("dataPrenotata") LocalDate dataPrenotata);
 	
 	//FILTRO PER TIPO DI POSTAZIONE
 	@Query("SELECT post FROM Postazione post WHERE post.tipo = :tipo ")

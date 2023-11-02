@@ -27,7 +27,6 @@ import com.palma.com.gestione_prenotazione.service.DipendenteService;
 import com.palma.com.gestione_prenotazione.service.PostazioneService;
 import com.palma.com.gestione_prenotazione.service.PrenotazioneService;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 //@CrossOrigin(origins =  "http://127.0.0.1:5500", maxAge = 360000)
@@ -88,46 +87,45 @@ public class PrenotazioneController {
 	    try {
 	        Long postazioneId = prenotazione.getPostazione().getId();
 	        LocalDate dataPrenotata = prenotazione.getDataPrenotata();
+	        Integer maxOccupanti = prenotazione.getPostazione().getMaxOccupanti();
 
 	        // Recupera la postazione dal repository utilizzando l'ID
 	        Postazione postazione = postazioneService.getPostazione(postazioneId);
 
-	        // Controlla se la postazione ha raggiunto il limite massimo di occupanti
-	        if (postazione.getNumPrenotati() >= postazione.getMaxOccupanti()) {
-	            postazione.setAvailable(false);
-	            return new ResponseEntity<>("Non è possibile prenotare questa postazione in quanto ha raggiunto il limite massimo di occupanti.", HttpStatus.BAD_REQUEST);
+	        Integer numeroPrenotati = postRepo.contaPrenotazioniPerData(postazione, dataPrenotata);
+
+	        // Verifica se il numero di prenotazioni supera il massimo di occupanti
+	        if (numeroPrenotati >= maxOccupanti) {
+	            return new ResponseEntity<>("La postazione ha raggiunto il numero massimo di occupanti per la data " + dataPrenotata + ". Scegli un'altra data.", HttpStatus.BAD_REQUEST);
 	        }
 
-	        // Verifica la disponibilità della postazione per la data specifica
-	        if (postRepo.isPostazioneDisponibile(postazione, dataPrenotata)) {
-	            // Controlli aggiuntivi
-	            if (!service.checkDataPrenotazione(prenotazione.getDataPrenotata())) {
-	                return new ResponseEntity<>("Impossibile prenotare con così poco anticipo", HttpStatus.BAD_REQUEST);
-	            }
-
-	            if (!service.checkPrenotazioniUtentePerData(prenotazione.getDipendente(), prenotazione.getDataPrenotazione())) {
-	                return new ResponseEntity<>("Impossibile effettuare due prenotazioni per la stessa data", HttpStatus.BAD_REQUEST);
-	            }
-
-	            if (prenotazione.getId() != null && repo.existsById(prenotazione.getId())) {
-	                return new ResponseEntity<>("La prenotazione esiste già nel database", HttpStatus.BAD_REQUEST);
-	            }
-
-	            // Se tutto è a posto, salva la prenotazione
-	            postazione.setNumPrenotati(postazione.getNumPrenotati() + 1);
-	            postRepo.save(postazione);
-	            return new ResponseEntity<>("Prenotazione avvenuta con successo!", HttpStatus.OK);
-	        } else {
-	            // La postazione non è disponibile
-	            return new ResponseEntity<>("La postazione non è disponibile. Scegli un'altra data.", HttpStatus.BAD_REQUEST);
+	        // Controlli aggiuntivi
+	        if (!service.checkDataPrenotazione(prenotazione.getDataPrenotata())) {
+	            return new ResponseEntity<>("Impossibile prenotare con così poco anticipo", HttpStatus.BAD_REQUEST);
 	        }
+
+	        if (!service.checkPrenotazioniUtentePerData(prenotazione.getDipendente(), prenotazione.getDataPrenotata())) {
+	            return new ResponseEntity<>("Impossibile effettuare due prenotazioni per la stessa data", HttpStatus.BAD_REQUEST);
+	        }
+
+	        // Verifica se esiste già una prenotazione con la stessa postazione e data
+	        //if (repo.existsByPostazioneAndDataPrenotata(prenotazione.getPostazione(), prenotazione.getDataPrenotata())) {
+	        //    return new ResponseEntity<>("La prenotazione esiste già nel database", HttpStatus.BAD_REQUEST);
+	       // }
+
+	        // Se tutto è a posto, salva la prenotazione
+	        postazione.setNumPrenotati(postazione.getNumPrenotati() + 1);
+	        postRepo.save(postazione);
+
+	        repo.save(prenotazione);
+
+	        return new ResponseEntity<>("Prenotazione avvenuta con successo!", HttpStatus.OK);
 	    } catch (EntityNotFoundException ex) {
 	        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
 	    } catch (RuntimeException ex) {
 	        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	    }
 	}
-
 	
 	
 	

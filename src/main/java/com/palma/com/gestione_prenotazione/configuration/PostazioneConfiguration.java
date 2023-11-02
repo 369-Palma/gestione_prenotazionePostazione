@@ -25,16 +25,15 @@ public class PostazioneConfiguration {
 		Faker fake = new Faker(new Locale("it-IT"));
 		
 		TipoPostazione tipo = TipoPostazione.TipoPostazioneRandom();
-		int maxOccupanti = fake.number().numberBetween(1, 15);
+		Integer maxOccupanti = fake.number().numberBetween(1, 15);
 		
 		return Postazione.builder()
 				.codice(fake.number().numberBetween(000000000000001l, 9999999999999999l))
-				.descrizione(tipo + ". Può ospitare un massimo di " + maxOccupanti + " .")
+				.descrizione(tipo + ". Può ospitare un massimo di " + maxOccupanti + ".")
 				.maxOccupanti(maxOccupanti)
 				.available(true)
 				.tipo(tipo)
 				.building(buildingService.getBuildingRandom())
-				//.prenotazioni(null)
 				.numPrenotati(0)
 				.build();
 	}

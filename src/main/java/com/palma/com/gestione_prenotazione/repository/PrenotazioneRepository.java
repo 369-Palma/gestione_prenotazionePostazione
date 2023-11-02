@@ -17,5 +17,5 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
 
 public Page<Prenotazione> findByDipendenteAndDataPrenotata(Dipendente d, LocalDate dataPrenotata, Pageable pageable);
 	
-
+boolean existsByPostazioneAndDataPrenotata(Postazione postazione, LocalDate dataPrenotata);
 }
