@@ -12,13 +12,11 @@ private Long id;
 
 private String name;
 private String lastname;
-@Column(nullable = false)
-private String username;
-@Column(nullable = false)
+
+@Column(nullable = false, unique= true)
 private String email;
-@Column(nullable = false)
-private Boolean active;
-@Column(nullable = false)
-private String password;
+
+//private Boolean active;
+
 
 }

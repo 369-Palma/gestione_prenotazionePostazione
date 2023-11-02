@@ -14,8 +14,8 @@ private Long codice;
 
 private String descrizione;
 
-@Column(nullable = false)
-private Integer numeroMaxOccupanti;
+//@Column(nullable = false)
+private Integer maxOccupanti;
 
 @Column(nullable = false)
 // @Enumerated(EnumType.STRING)
@@ -31,8 +31,12 @@ private TipoPostazione tipo;
 @ManyToOne
 private Building building;
 
+public Integer numPrenotati;
+
 //@OneToMany(mappedBy ="postazione")
 //@OrderBy(value = "dataPrenotata")
 //private List<Prenotazione> prenotazioni;
+
+
 
 }

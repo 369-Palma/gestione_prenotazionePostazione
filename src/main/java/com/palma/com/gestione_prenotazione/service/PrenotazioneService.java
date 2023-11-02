@@ -29,10 +29,12 @@ public class PrenotazioneService {
 
 	@Autowired PrenotazioneRepository repo;
 	@Autowired PostazioneRepository postRepo;
+	
+	@Autowired PostazioneService postService;
 	//@Autowired @Qualifier(PrenotazioneRandom) private ObjectProvider<Prenotazione> randomPrenotazioneProvider;
 	
-	@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
-	private Integer giorniAnticipoPrenotazione;
+	//@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
+	//private Integer giorniAnticipoPrenotazione;
 	
 	public Prenotazione prenota(Dipendente d, Postazione postazione, LocalDate dataPrenotazione) {
 		if (checkDataPrenotazione(dataPrenotazione) == false) {
@@ -49,6 +51,41 @@ public class PrenotazioneService {
 		return repo.save(prenotazione);
 
 	}
+	@Value("${gestioneprenotazioni.giornianticipoprenotazione}")
+	private Integer giorniAnticipoPrenotazione;
+	public boolean checkDataPrenotazione(LocalDate dataPrenotata) {
+        LocalDate oggi = LocalDate.now();
+        LocalDate dataMinima = oggi.plusDays(giorniAnticipoPrenotazione);
+        return dataPrenotata.isAfter(dataMinima);
+    }
+	
+	
+	public boolean prenotaPostazione(Long postazioneId, LocalDate dataPrenotata) {
+	    // Recupera la postazione dal repository utilizzando l'ID
+	    Postazione postazione = postService.getPostazione(postazioneId);
+
+	    // Controlla se la postazione ha raggiunto il limite massimo di occupanti
+	    if (postazione.getNumPrenotati() >= postazione.getMaxOccupanti()) {
+	    	postazione.setAvailable(false);
+	        throw new EntityNotFoundException("Non è possibile prenotare questa postazione in quanto ha raggiunto il limite massimo di occupanti.");
+	    }
+
+	    // Verifica la disponibilità della postazione per la data specifica
+	    if (!postRepo.isPostazioneDisponibile(postazione, dataPrenotata)) {
+	        return false; // La postazione non è disponibile
+	    }
+
+	    // Incrementa il contatore numPrenotati
+	    int numPrenotati = postazione.getNumPrenotati() + 1;
+	    postazione.setNumPrenotati(numPrenotati);
+	    System.out.println("numero prenotati: " + numPrenotati);
+
+	    // Salva la postazione nel repository
+	    postRepo.save(postazione);
+
+	    return true;
+	}
+	
 	//METODI STANDARD PER API
 
 		public List<Prenotazione> getAllPrenotazione() {
@@ -71,7 +108,7 @@ public class PrenotazioneService {
 		//}
 
 		public Prenotazione createPrenotazione(Prenotazione p) {
-			if(p.getId()!= null && repo.existsById(p.getId())) {
+			if(repo.existsById(p.getId())) {
 				throw new EntityExistsException("The prenotation is already in the database ");
 			} else {
 				repo.save(p);
@@ -97,17 +134,13 @@ public class PrenotazioneService {
 
 	
 	//SPECIALI
-		private boolean checkDataPrenotazione(LocalDate dataPrenotazione) {
-			LocalDate now = LocalDate.now();
-			return dataPrenotazione.minus(giorniAnticipoPrenotazione, ChronoUnit.DAYS).isAfter(now);
-		}
+		
 
-		private boolean checkPrenotazioniUtentePerData(Dipendente d, LocalDate dataPrenotazione) {
-
+		public boolean checkPrenotazioniUtentePerData(Dipendente d, LocalDate dataPrenotata) {
 			Pageable pageable = PageRequest.of(0, 1);
 
 			Page<Prenotazione> findByDipendenteDataPrenotata = repo.findByDipendenteAndDataPrenotata(d,
-					dataPrenotazione, pageable);
+					dataPrenotata, pageable);
 
 			return findByDipendenteDataPrenotata.isEmpty();
 
@@ -125,8 +158,6 @@ public class PrenotazioneService {
 		}	
 		}
 
-		//public Page<Prenotazione> findByDipendente(Dipendente d, Pageable pageable) {
-		//	return repo.findByDipendente(d, pageable);
-		//}
+		
 	
 
