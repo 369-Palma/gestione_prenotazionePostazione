@@ -21,12 +21,14 @@ import com.palma.com.gestione_prenotazione.common.PrenotazioneException;
 import com.palma.com.gestione_prenotazione.model.Dipendente;
 import com.palma.com.gestione_prenotazione.model.Postazione;
 import com.palma.com.gestione_prenotazione.model.Prenotazione;
+import com.palma.com.gestione_prenotazione.repository.PostazioneRepository;
 import com.palma.com.gestione_prenotazione.repository.PrenotazioneRepository;
 import com.palma.com.gestione_prenotazione.service.DipendenteService;
 import com.palma.com.gestione_prenotazione.service.PostazioneService;
 import com.palma.com.gestione_prenotazione.service.PrenotazioneService;
 
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 
 //@CrossOrigin(origins =  "http://127.0.0.1:5500", maxAge = 360000)
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -38,6 +40,7 @@ public class PrenotazioneController {
 	@Autowired PrenotazioneRepository repo;
 	@Autowired DipendenteService dipendenteService;
 	@Autowired PostazioneService postazioneService;
+	@Autowired PostazioneRepository postRepo;
 	
 	@GetMapping("/id/{id}")
 	@PreAuthorize("isAuthenticated()")
@@ -78,6 +81,55 @@ public class PrenotazioneController {
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+	
+	
+	@PostMapping("/prenota")
+	public ResponseEntity<?> prenotaPostazione(@RequestBody Prenotazione prenotazione) {
+	    try {
+	        Long postazioneId = prenotazione.getPostazione().getId();
+	        LocalDate dataPrenotata = prenotazione.getDataPrenotata();
+
+	        // Recupera la postazione dal repository utilizzando l'ID
+	        Postazione postazione = postazioneService.getPostazione(postazioneId);
+
+	        // Controlla se la postazione ha raggiunto il limite massimo di occupanti
+	        if (postazione.getNumPrenotati() >= postazione.getMaxOccupanti()) {
+	            postazione.setAvailable(false);
+	            return new ResponseEntity<>("Non è possibile prenotare questa postazione in quanto ha raggiunto il limite massimo di occupanti.", HttpStatus.BAD_REQUEST);
+	        }
+
+	        // Verifica la disponibilità della postazione per la data specifica
+	        if (postRepo.isPostazioneDisponibile(postazione, dataPrenotata)) {
+	            // Controlli aggiuntivi
+	            if (!service.checkDataPrenotazione(prenotazione.getDataPrenotata())) {
+	                return new ResponseEntity<>("Impossibile prenotare con così poco anticipo", HttpStatus.BAD_REQUEST);
+	            }
+
+	            if (!service.checkPrenotazioniUtentePerData(prenotazione.getDipendente(), prenotazione.getDataPrenotazione())) {
+	                return new ResponseEntity<>("Impossibile effettuare due prenotazioni per la stessa data", HttpStatus.BAD_REQUEST);
+	            }
+
+	            if (prenotazione.getId() != null && repo.existsById(prenotazione.getId())) {
+	                return new ResponseEntity<>("La prenotazione esiste già nel database", HttpStatus.BAD_REQUEST);
+	            }
+
+	            // Se tutto è a posto, salva la prenotazione
+	            postazione.setNumPrenotati(postazione.getNumPrenotati() + 1);
+	            postRepo.save(postazione);
+	            return new ResponseEntity<>("Prenotazione avvenuta con successo!", HttpStatus.OK);
+	        } else {
+	            // La postazione non è disponibile
+	            return new ResponseEntity<>("La postazione non è disponibile. Scegli un'altra data.", HttpStatus.BAD_REQUEST);
+	        }
+	    } catch (EntityNotFoundException ex) {
+	        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+	    } catch (RuntimeException ex) {
+	        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+	}
+
+	
+	
 	
 	@PostMapping
 	public ResponseEntity<?> createPrenotazione2(@RequestBody Prenotazione prenotazione) {

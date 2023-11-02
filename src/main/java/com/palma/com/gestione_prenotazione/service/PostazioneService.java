@@ -24,6 +24,9 @@ public class PostazioneService {
 	@Autowired PostazioneRepository repo;
 	@Autowired @Qualifier("PostazioneRandom") private ObjectProvider<Postazione> randomPostazioneProvider;
 
+	public Integer numPrenotati;
+	
+	
 	//CREA POSTAZIONI RANDOM 
 	public Postazione createPostazioneRandom() {
 		return createPostazione(randomPostazioneProvider.getObject());

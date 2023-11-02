@@ -30,11 +30,12 @@ public class PostazioneConfiguration {
 		return Postazione.builder()
 				.codice(fake.number().numberBetween(000000000000001l, 9999999999999999l))
 				.descrizione(tipo + ". Può ospitare un massimo di " + maxOccupanti + " .")
-				.numeroMaxOccupanti(maxOccupanti)
+				.maxOccupanti(maxOccupanti)
 				.available(true)
 				.tipo(tipo)
 				.building(buildingService.getBuildingRandom())
 				//.prenotazioni(null)
+				.numPrenotati(0)
 				.build();
 	}
 }
