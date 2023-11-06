@@ -13,7 +13,7 @@ private Long id;
 private String name;
 private String lastname;
 
-@Column(nullable = false, unique= true)
+@Column(nullable = false)
 private String email;
 
 //private Boolean active;
